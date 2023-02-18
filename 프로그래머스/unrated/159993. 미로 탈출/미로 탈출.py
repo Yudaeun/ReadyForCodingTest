@@ -2,12 +2,8 @@ from collections import deque
 flag=0
 answer=0
 def solution(maps):
-    newMaps=[]
     dx=[-1,1,0,0]
     dy=[0,0,-1,1]
-    
-    for i in range(len(maps)):
-        newMaps.append(list(maps[i]))
     
     def bfs(x,y):
         global flag,answer
@@ -15,14 +11,14 @@ def solution(maps):
         visited[x][y]=1
         q=deque()
         q.append((x,y))
-
+        
         while q:
             cx,cy=q.popleft()
             for i in range(4):
                 nx,ny=cx+dx[i],cy+dy[i]
                 if nx<0 or nx>=len(maps) or ny<0 or ny>=len(maps[0]):
                     continue
-                if (maps[nx][ny]=='O' or maps[nx][ny]=='S') and visited[nx][ny]==0 :
+                if (maps[nx][ny]=='O' or maps[nx][ny]=='S') and visited[nx][ny]==0:
                     visited[nx][ny]=visited[cx][cy]+1
                     q.append((nx,ny))
                 elif maps[nx][ny]=='L' and flag==0:
@@ -42,20 +38,16 @@ def solution(maps):
                 elif maps[nx][ny]=='E' and visited[nx][ny]==0 and flag==0:
                     visited[nx][ny]=visited[cx][cy]+1
                     q.append((nx,ny))
-                
     for i in range(len(maps)):
         for j in range(len(maps[0])):
             if maps[i][j]=='S':
                 x=bfs(i,j)
                 break
-                
     if answer==0 and flag==0:
         return -1
-    firstAnswer=answer
-    
+    firstAns=answer
     x=bfs(x[0],x[1])
-    
-    if(firstAnswer==answer):
+    if firstAns==answer:
         return -1
     
     return answer
