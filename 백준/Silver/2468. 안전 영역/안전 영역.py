@@ -1,45 +1,42 @@
+import sys
 from collections import deque
-
+input=sys.stdin.readline
+n=int(input())
+maxHeight=0
+minHeight=sys.maxsize
+answer=0
+num=[]
 dx=[-1,1,0,0]
 dy=[0,0,-1,1]
-def bfs(x,y,k,n,visited):
+
+for i in range(n):
+    num.append(list(map(int,input().split())))
+
+for i in range(n):
+    for j in range(n):
+        maxHeight=max(maxHeight,num[i][j])
+        minHeight=min(minHeight,num[i][j])
+
+def bfs(h, x, y):
     q=deque()
     q.append((x,y))
-    visited[x][y]=1
     while q:
         cx,cy=q.popleft()
         for i in range(4):
-            nx=dx[i]+cx
-            ny=dy[i]+cy
-            if nx<=-1 or nx>=n or ny<=-1 or ny>=n:
+            nx,ny=cx+dx[i],cy+dy[i]
+            if nx<0 or nx>=n or ny<0 or ny>=n:
                 continue
-            if visited[nx][ny]==0 and graph[nx][ny]>k:
+            if num[nx][ny]>h and visited[nx][ny]==0:
                 q.append((nx,ny))
                 visited[nx][ny]=1
 
-
-n=int(input())
-graph=[]
-for _ in range(n):
-    graph.append(list(map(int,input().split())))
-maxNum=0
-for i in range(n):
-    for j in range(n):
-        maxNum=max(maxNum,graph[i][j])
-
-visited=[[0 for _ in range(n)] for _ in range(n)]
-cnt=0
-answer=0
-for k in range(1,maxNum+1):
+for h in range(maxHeight):
+    visited=[[0]*n for _ in range(n)]
+    tempSum=0
     for i in range(n):
         for j in range(n):
-            if graph[i][j]<=k:
-                visited[i][j]=-1
-            if visited[i][j]==0:
-                cnt+=1
-                bfs(i,j,k,n,visited)
-    visited = [[0 for _ in range(n)] for _ in range(n)]
-    answer=max(answer,cnt)
-    cnt = 0
-if answer==0: answer=1
+            if (num[i][j]>h and visited[i][j]==0):
+                bfs(h,i,j)
+                tempSum+=1
+    answer=max(answer,tempSum)
 print(answer)
