@@ -32,15 +32,11 @@ def check(park,routes,x,y):
             dist=3
                     
         tempX,tempY=move(park,x,y,int(route[1]),dist)
-        if tempX==-1: continue
-        else: x,y=tempX,tempY
-    return [x,y]
         
-            
-            
+        if tempX!=-1: 
+            x,y=tempX,tempY
+    return [x,y]
+          
 def solution(park, routes):
-    answer = []
     x,y=searchStart(park)
-    answer=check(park,routes,x,y)
-    
-    return answer
+    return check(park,routes,x,y)
