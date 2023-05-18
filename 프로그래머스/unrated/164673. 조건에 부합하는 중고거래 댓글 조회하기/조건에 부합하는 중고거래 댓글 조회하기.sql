@@ -1,5 +1,4 @@
-SELECT a.title,a.board_id,b.reply_id,b.writer_id,b.contents,date_format(b.created_date,'%Y-%m-%d') CREATED_DATE
-from used_goods_board a join used_goods_reply b
-on a.board_id=b.board_id
-where date_format(a.created_date,'%Y-%m')='2022-10'
-order by CREATED_DATE,a.title;
+SELECT A.title,A.board_id,B.reply_id,B.writer_id,B.contents,date_format(B.created_date,'%Y-%m-%d') CREATED_DATE
+from used_goods_board A join used_goods_reply B on A.board_id=B.board_id
+where year(A.created_date)=2022 and month(A.created_date)=10
+order by B.created_date,A.title;
