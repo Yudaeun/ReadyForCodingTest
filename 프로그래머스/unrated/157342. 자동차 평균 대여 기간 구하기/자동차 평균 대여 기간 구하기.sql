@@ -1,8 +1,5 @@
--- 코드를 입력하세요
-SELECT CAR_ID,ROUND(AVG(DATE),1) AVERAGE_DURATION
-FROM (SELECT *, DATEDIFF(END_DATE,START_DATE)+1 DATE
-      FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
-     ) CAR_RENTAL_COMPANY_RENTAL_HISTORY
-GROUP BY CAR_ID
-HAVING AVG(DATE)>=7
-ORDER BY AVERAGE_DURATION DESC,CAR_ID DESC
+SELECT car_id, round((sum(datediff(end_date,start_date)))/count(car_id)+1,1) average_duration
+from car_rental_company_rental_history
+group by car_id
+having (sum(datediff(end_date,start_date)))/count(car_id)+1>=7
+order by average_duration desc, car_id desc
