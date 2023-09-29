@@ -1,4 +1,5 @@
-SELECT A.REST_ID,B.rest_name,B.food_type,B.favorites FAVORITES,B.address,round(avg(A.review_score),2) SCORE
-from rest_review A join (select * from rest_info where address like '서울%') B on A.rest_id=B.rest_id
-group by B.rest_id
-order by score desc,favorites desc
+select A.REST_ID, A.REST_NAME, A.FOOD_TYPE,A.FAVORITES, A.ADDRESS,ROUND(AVG(B.REVIEW_SCORE),2) SCORE
+from rest_info A join rest_review B on A.REST_ID=B.REST_ID
+where A.address like '서울%'
+group by A.rest_name
+order by SCORE DESC, A.FAVORITES DESC;
