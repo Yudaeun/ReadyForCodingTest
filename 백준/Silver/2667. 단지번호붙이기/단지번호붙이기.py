@@ -1,33 +1,45 @@
 import sys
-sys.setrecursionlimit(10**7)
-n=int(input())
-#DFS 사용
-graph=[]
-for i in range(n):
-    graph.append(list(map(int,input())))
+from collections import deque
+input=sys.stdin.readline
 
-def dfs(x,y):
-    global count
-    if x<=-1 or x>=n or y<=-1 or y>=n:
-        return False
-    if graph[x][y]==1:
-        graph[x][y]=0 #방문처리
-        count+=1
-        dfs(x-1,y)
-        dfs(x+1,y)
-        dfs(x,y-1)
-        dfs(x,y+1) #상하좌우
-        return True
-    return False
-answer=[] #단지내 집의 수
-result=0 #총 단지수
+dx=[-1,1,0,0]
+dy=[0,0,-1,1]
+sum_town=0
+house_cnt=[]
+
+n=int(input())
+
+graph=[]
+visited=[[0]*n for i in range(n)]
+for i in range(n):
+    graph.append(list(str(input())))
+def bfs(x,y):
+    visited[x][y]=1
+    q=deque()
+    q.append([x,y])
+    cnt=1
+
+    while q:
+        cx,cy=q.popleft()
+        for i in range(4):
+            nx,ny=cx+dx[i],cy+dy[i]
+            if nx<0 or ny<0 or nx>=n or ny>=n:
+                continue
+            if visited[nx][ny]==0 and graph[nx][ny]=='1':
+                visited[nx][ny]=1
+                q.append([nx,ny])
+                cnt+=1
+
+    return cnt
+
+
 for i in range(n):
     for j in range(n):
-        count=0
-        if dfs(i,j)==True:
-            result+=1
-            answer.append(count)
-print(result)
-answer.sort()
-for i in answer:
-    print(i)
+        if graph[i][j]=='1' and visited[i][j]==0:
+            house_cnt.append(bfs(i,j))
+            sum_town+=1
+
+house_cnt.sort()
+print(sum_town)
+for i in range(len(house_cnt)):
+    print(house_cnt[i])
