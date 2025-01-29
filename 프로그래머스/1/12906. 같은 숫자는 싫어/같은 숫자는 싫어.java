@@ -2,23 +2,17 @@ import java.util.*;
 
 public class Solution {
     public int[] solution(int []arr) {
-        int[] answer = {};
-        ArrayList<Integer> num=new ArrayList<>();
-        int curNum=-1;
+        ArrayList<Integer> answer = new ArrayList<>();
+        int currentNum = arr[0];
         
-        for(int i=0;i<arr.length;i++){
-            if(curNum==arr[i]){
-                continue;
-            }else{
-                num.add(arr[i]);
-                curNum=arr[i];
+        for (int i = 1; i < arr.length; i++){
+            if (arr[i] != currentNum) {
+                answer.add(currentNum);
+                currentNum = arr[i];            
             }
         }
-        if(curNum!=arr[arr.length-1]){
-                num.add(arr[arr.length-1]);
-                
-            }
+        answer.add(currentNum);
 
-        return num.stream().mapToInt(Integer::intValue).toArray();
+        return answer.stream().mapToInt(Integer::intValue).toArray();
     }
 }
