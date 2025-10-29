@@ -1,44 +1,48 @@
 import java.util.*;
 
 class Solution {
-    static int[] dx={-1,1,0,0};
-    static int[] dy={0,0,-1,1};
+    static int[][] visited;
+    static int[] x = {-1, 1, 0, 0};
+    static int[] y = {0, 0, -1, 1};
     
     public int solution(int[][] maps) {
         int answer = 0;
-        int[][] visited=new int[maps.length][maps[0].length];
+        visited = new int[maps.length][maps[0].length];
         
-        answer=bfs(maps,visited);
+        bfs(maps);
         
-        return answer;
+        answer = visited[maps.length - 1][maps[0].length - 1];
+        
+        if (answer == 0) {
+            return -1;
+        } else {
+            return answer;
+        }
     }
     
-    private int bfs(int[][] maps, int[][] visited){
-        int x=0;
-        int y=0;
-        visited[x][y]=1;
-        Queue<int[]> q=new LinkedList<>();
-        q.add(new int[]{x,y});
+    private void bfs(int[][] maps) {
+        Queue<int[]> q = new LinkedList<>();
+        visited[0][0] = 1;
+        q.add(new int[]{0, 0});
         
-        while(!q.isEmpty()){
-            int[] current=q.poll();
-            int cx=current[0];
-            int cy=current[1];
-            for (int i=0;i<4;i++){
-                int nx=cx+dx[i];
-                int ny=cy+dy[i];
-                if (0<=nx && nx<maps.length && 0<=ny && ny<maps[0].length){
-                    if(maps[nx][ny]!=0 && visited[nx][ny]==0){
-                        visited[nx][ny]=visited[cx][cy]+1;
-                        q.add(new int[]{nx,ny});
-                    }
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int cx = cur[0];
+            int cy = cur[1];
+            
+            for (int i = 0; i < 4; i++) {
+                int dx = cx + x[i];
+                int dy = cy + y[i];
+                
+                if (dx < 0 || dy < 0 || dx >= maps.length || dy >= maps[0].length) {
+                    continue;
+                }
+                
+                if (maps[dx][dy] == 1 && visited[dx][dy] == 0) {
+                    visited[dx][dy] = visited[cx][cy] + 1;
+                    q.add(new int[]{dx, dy});
                 }
             }
-        }
-        if (visited[maps.length-1][maps[0].length-1]==0){
-            return -1;
-        }else{
-            return visited[maps.length-1][maps[0].length-1];
         }
     }
 }
